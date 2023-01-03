@@ -1,0 +1,4 @@
+pytelegrambotapi
+pyyaml
+sqlalchemy
+pydantic
