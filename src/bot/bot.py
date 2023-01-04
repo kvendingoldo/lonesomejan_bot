@@ -42,7 +42,7 @@ def start(message):
     markup = telebot.types.ReplyKeyboardMarkup(resize_keyboard=True)
 
     markup.row('проверить заявку', 'подать заявку', 'отменить заявку')
-    if message.from_user.username == config["admin"]["username"]:
+    if message.from_user.username in config["admin"]["usernames"]:
         markup.row('показать пары', 'показать игроков')
 
     msg = bot.send_message(message.from_user.id,

@@ -2,7 +2,9 @@ database:
   url: sqlite:////Users/asharov/lonesomejan.db
 
 admin:
-  username: kvendingoldo
+  usernames:
+    - kvendingoldo
+    - liseren
 
 log:
   dir: ""
