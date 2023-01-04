@@ -11,4 +11,4 @@ log:
 
 daemons:
   pairs:
-    period: 300 # 5min
+    period: 21600 # 6h
