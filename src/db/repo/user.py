@@ -27,3 +27,28 @@ class UserRepository:
             if not user:
                 raise UserNotFoundError(id)
             return user
+
+    def delete_by_id(self, id: str) -> None:
+        with self.session_factory() as session:
+            entity: User = session.query(User).filter(User.id == id).first()
+            if not entity:
+                raise UserNotFoundError(id)
+            session.delete(entity)
+            session.commit()
+
+    def list(self, spec: Mapping = None) -> Iterator[User]:
+        with self.session_factory() as session:
+            objs = session.query(User).all()
+
+        return repo.filtration(spec, objs)
+
+    def update(self, user: User) -> None:
+        with self.session_factory() as session:
+            session.query(User).filter_by(id=user.id).update(dict(
+                username=user.username,
+                first_name=user.first_name,
+                last_name=user.last_name,
+                pair=user.pair
+            ))
+
+            session.commit()

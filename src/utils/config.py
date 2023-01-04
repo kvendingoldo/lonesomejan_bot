@@ -8,16 +8,15 @@ def load(yaml_path):
     with open(yaml_path, "r") as file:
         config = yaml.safe_load(file)
 
-#    slack_bot_token = os.environ["SLACK_BOT_TOKEN"]
-#    slack_app_token = os.environ["SLACK_APP_TOKEN"]
+    if "TG_BOT_TOKEN" in os.environ:
+        config["telegram"] = {
+            "token": os.environ["TG_BOT_TOKEN"]
+        }
 
-    #db_password = os.environ.get("DATABASE_PASSWORD")
+    if "DB_URL" in os.environ:
+        config["database"]["url"] = os.environ["DB_URL"]
 
-    # config["slack"] = {
-    #     "botToken": slack_bot_token,
-    #     "appToken": slack_app_token
-    # }
-
-    #config["database"]["password"] = db_password
+    if "LOG_DIR" in os.environ:
+        config["log"]["dir"] = os.environ["LOG_DIR"]
 
     return config

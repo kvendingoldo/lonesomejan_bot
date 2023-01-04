@@ -8,6 +8,8 @@ from sqlalchemy import create_engine, orm
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import Session
 
+from db.exceptions import UserNotFoundError
+
 Base = declarative_base()
 
 
@@ -17,10 +19,7 @@ class Database:
             db_url,
             echo=False,
             echo_pool=False,
-            logging_name="sqlalchemy.engine",
-            pool_logging_name="sqlalchemy.pool"
-
-
+            logging_name="sqlalchemy.engine"
         )
         self._session_factory = orm.scoped_session(
             orm.sessionmaker(
@@ -38,8 +37,10 @@ class Database:
         session: Session = self._session_factory()
         try:
             yield session
-        except Exception:
-            logger.exception('Session rollback because of exception')
+        except UserNotFoundError as ex:
+            raise ex
+        except Exception as ex:
+            logger.exception('Session rollback because of exception %s' % ex)
             session.rollback()
             raise
         finally:

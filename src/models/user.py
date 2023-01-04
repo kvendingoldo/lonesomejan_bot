@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from sqlalchemy import Column, String, DateTime, Boolean
+from sqlalchemy import Column, String, DateTime
 from sqlalchemy.sql import func
 
 from db.database import Base
@@ -15,7 +15,7 @@ class User(Base):
     first_name = Column(String(24), nullable=False, unique=False, default="none")
     last_name = Column(String(24), nullable=False, unique=False, default="none")
 
-    has_pair = Column(Boolean, default=False)
+    pair = Column(String(48), nullable=False, unique=False, default="none")
 
     tmst_created = Column(DateTime(timezone=True), server_default=func.now())
     tmst_updated = Column(DateTime(timezone=True), onupdate=func.now())
@@ -23,5 +23,6 @@ class User(Base):
     def __repr__(self):
         return f'<User(id="{self.id}", ' \
                f'username="{self.username}", ' \
-               f'fist_name="{self.fist_name}", ' \
-               f'last_name="{self.last_name}")>'
+               f'fist_name="{self.first_name}", ' \
+               f'last_name="{self.last_name}")>' \
+               f'pair="{self.pair}")>'

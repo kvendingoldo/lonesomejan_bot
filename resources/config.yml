@@ -1,2 +1,12 @@
 database:
   url: sqlite:////Users/asharov/lonesomejan.db
+
+admin:
+  username: kvendingoldo
+
+log:
+  dir: ""
+
+daemons:
+  pairs:
+    period: 300 # 5min

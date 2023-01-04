@@ -2,36 +2,28 @@
 
 import datetime
 import logging
-import time
-import os
+import telebot
 
 from threading import Thread
 
-#from utils.parser import prepare_basic_collections
-#from utils.updater import update_scenes_daemon, update_authors_daemon
-from bot.bot import run
-#from config import data_dir, first_run
-from utils import config as cfg_utils
+from bot.bot import run as b_run
+from daemons.pairs import run as p_run
 
-#LOG_DIR = '%s/log' % data_dir
+from utils import config as cfg_utils
 
 if __name__ == '__main__':
     config = cfg_utils.load("../resources/config.yml")
 
-    #os.makedirs(LOG_DIR, exist_ok=True)
-    #log_name = '%s/%s.log' % (LOG_DIR, datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
-    #logging.basicConfig(filename=log_name, level=logging.DEBUG)
+    log_dir = config["log"]["dir"]
+    if log_dir:
+        log_name = '%s/%s.log' % (config["log"]["dir"], datetime.datetime.now().strftime('%d_%m_%Y_%H_%M'))
+        logging.basicConfig(filename=log_name, level=logging.DEBUG)
+    logging.basicConfig(level=logging.INFO)
+    telebot.logger.setLevel(logging.INFO)
 
+    create_pairs = Thread(target=p_run, args=(config,))
+    create_pairs.start()
 
-
-    # update_authors_proccess = Thread(target=update_scenes_daemon, args=())
-    # update_authors_proccess.start()
-    #
-    # update_authors_proccess = Thread(target=update_authors_daemon, args=())
-    # update_authors_proccess.start()
-    #
-    #
-    #
-    print("abc")
-    telegram_bot_proccess = Thread(target=run, args=())
+    telegram_bot_proccess = Thread(target=b_run, args=())
     telegram_bot_proccess.start()
+    telegram_bot_proccess.join()

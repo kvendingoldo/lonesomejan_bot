@@ -7,11 +7,5 @@ class NotFoundError(Exception):
         super().__init__(f'{self.entity_name} not found, id: {entity_id}')
 
 
-class MeetNotFoundError(NotFoundError):
-    entity_name: str = 'Meet'
-
-
-
-
 class UserNotFoundError(NotFoundError):
     entity_name: str = 'User'
